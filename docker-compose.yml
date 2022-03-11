@@ -1,0 +1,33 @@
+version: '3'
+services:
+  node:
+    restart: always
+    build: .
+    ports:
+      - 51005:51005
+    volumes:
+      - ./:/code
+
+  mysql_server:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=backend_demo
+      - MYSQL_USER=backend_demo
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - 3306:3306
+    volumes:
+      - ./MySQL:/var/lib/mysql
+
+  mongodb:
+    image: mongo:5.0.2
+    restart: unless-stopped
+#    env_file: ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    ports:
+      - 27017:27017
+    volumes:
+      - ./MongoDB:/data/db
